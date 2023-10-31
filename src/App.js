@@ -9,18 +9,13 @@ function App() {
 
   const [showInstruction, setShowInstruction] = useState(true);
   const [showDifficulty, setShowDifficulty] = useState(true);
+  const [showCustom, setShowCustom] = useState(false);
 
   //storing difficulty information in state (used for generating new boards)
   const [boardDifficulty, setBoardDifficulty] = useState({
-    label: "",
-    length: 0,
+    label: "Easy",
+    length: 4,
     guesses: 10,
-  });
-
-  //storing custom difficulty information in state (used for storing form info)
-  const [custom, setCustom] = useState({
-    length: "",
-    guesses: "",
   });
 
   //storing combination information in state
@@ -42,7 +37,7 @@ function App() {
   const handleDifficulty = (newDifficulty) => {
     const difficulty = { Easy: 4, Medium: 5, Hard: 6 };
     setBoardDifficulty((prevDiff) => ({
-      ...prevDiff,
+      guesses: 10,
       length: difficulty[newDifficulty],
       label: newDifficulty,
     }));
@@ -52,30 +47,11 @@ function App() {
   const handleCustomInput = (e) => {
     console.log(e);
     const custom = e.target.value;
-    if (e.target.name === "guesses") {
-      if (/^[0-9]*$/.test(custom) && custom.length <= 20) {
-        setCustom((prevCustom) => {
-          return { ...prevCustom, guesses: custom };
-        });
-      }
-    } else if (e.target.name === "length") {
-      if (/^[0-9]*$/.test(custom) && custom.length <= 10) {
-        setCustom((prevCustom) => {
-          return { ...prevCustom, length: custom };
-        });
-      }
-    }
-  };
-
-  const handleCustomSubmit = (e) => {
-    e.preventDefault();
-    console.log(e);
-
-    setBoardDifficulty({
+    setBoardDifficulty((prevCustom) => ({
+      ...prevCustom,
       label: "Custom",
-      length: custom.length,
-      guesses: custom.guesses,
-    });
+      [e.target.name]: custom,
+    }));
   };
 
   // Handle user guess input
@@ -137,8 +113,8 @@ function App() {
       setBoard({ difficulty: boardDifficulty, combo: [1, 2, 3, 4, 5, 6] });
     } else if (boardDifficulty.label === "Custom") {
       setBoard({
-        difficulty: boardDifficulty,
-        combo: new Array(custom.length).fill(1),
+        difficulty: boardDifficulty.label,
+        combo: new Array(boardDifficulty.length).fill(1),
       });
     }
 
@@ -190,7 +166,7 @@ function App() {
         guess: guess,
         continue: true,
         win: false,
-        feedback: "",
+        feedback: "0 correct numbers, 0 correct positions",
         hints: 3,
         time: 0,
       },
@@ -238,19 +214,27 @@ function App() {
           <p>
             If you really want further customization, you can also choose the
             number of digits and guesses! Note: the number of digits must be
-            less than 10, and the number of guesses must be less than 20.
+            less than 10, and the number of guesses must between 2 and 20.
           </p>
         </div>
       ) : null}
       <DailyChallenge></DailyChallenge>
       <div className='difficulty'>
-        <h3>Difficulty Level: </h3>
         <button onClick={() => setShowDifficulty(!showDifficulty)}>
-          {showDifficulty ? "Hide Difficulty" : "Show Difficulty"}
+          {showDifficulty
+            ? "Hide Difficulty Setting"
+            : "Show Difficulty Setting"}
         </button>
         {showDifficulty ? (
           <div>
-            <label htmlFor='difficulty'>Choose a Difficulty Level: </label>
+            <h3>Difficulty Level Setting</h3>
+            <p>
+              {boardDifficulty.label} ({boardDifficulty.length}-digit(s),{" "}
+              {boardDifficulty.guesses} guesses)
+            </p>
+            <label htmlFor='difficulty'>
+              Choose a Preset Difficulty Level:{" "}
+            </label>
             <button
               onClick={() => {
                 handleDifficulty("Easy");
@@ -273,40 +257,62 @@ function App() {
               Hard (6-digits)
             </button>
             <br></br>
-            <label htmlFor='custom'>Custom Difficulty: </label>
-            <form id='custom' onSubmit={handleCustomSubmit}>
-              <label htmlFor='length'>Length of Code (1-10): </label>
-              <input
-                id='length'
-                type='number'
-                name='length'
-                value={custom.length}
-                onChange={handleCustomInput}
-              />
-              <br></br>
-              <label htmlFor='guesses'>Number of Guesses (1-20): </label>
-              <input
-                id='guesses'
-                type='number'
-                name='guesses'
-                value={custom.guesses}
-                onChange={handleCustomInput}
-              />
+            <div>
               <button
-                type='submit'
-                disabled={custom.guesses.length < 1 || custom.length.length < 1}
+                onClick={() => {
+                  setShowCustom(!showCustom);
+                }}
               >
-                Customize Difficulty
+                {showCustom
+                  ? "Hide Custom Difficulty"
+                  : "Show Custom Difficulty"}
               </button>
-            </form>
-            {/* <button onClick={() => handleDifficulty("Custom")}>Custom</button> */}
+              {showCustom ? (
+                <div>
+                  {" "}
+                  <label htmlFor='custom'>
+                    Custom Difficulty: {boardDifficulty.length}-digit(s),{" "}
+                    {boardDifficulty.guesses} guesses
+                  </label>
+                  <form id='custom' onSubmit={checkNewBoard}>
+                    <label htmlFor='length'>
+                      Length of Code ({boardDifficulty.length}):{" "}
+                    </label>
+                    <br></br>
+                    <input
+                      id='length'
+                      type='range'
+                      min='1'
+                      max='10'
+                      name='length'
+                      value={boardDifficulty.length}
+                      onChange={handleCustomInput}
+                    />
+                    <br></br>
+                    <label htmlFor='guesses'>
+                      Number of Guesses ({boardDifficulty.guesses}):{" "}
+                    </label>
+                    <br></br>
+                    <input
+                      id='guesses'
+                      type='range'
+                      min='2'
+                      max='20'
+                      name='guesses'
+                      value={boardDifficulty.guesses}
+                      onChange={handleCustomInput}
+                    />
+                    <br></br>
+                  </form>
+                </div>
+              ) : null}
+            </div>
+            <br></br>
             {boardDifficulty.label ? (
-              <div>
-                <button onClick={() => checkNewBoard()}>
-                  Generate {board.combo[0] ? "New" : null}{" "}
-                  {boardDifficulty.label}-Level Code
-                </button>
-              </div>
+              <button id='generateBoardBtn' onClick={() => checkNewBoard()}>
+                Generate {board.combo[0] ? "New" : null} {boardDifficulty.label}
+                -Level Code
+              </button>
             ) : null}
           </div>
         ) : null}
