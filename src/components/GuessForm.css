@@ -1,0 +1,32 @@
+/* App.css */
+.guess-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .guess-input {
+    width: 200px;
+    padding: 10px;
+    margin-bottom: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+  }
+  
+  .guess-button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .guess-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  

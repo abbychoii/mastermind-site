@@ -1,4 +1,5 @@
-import CustomDifficultyForm from "./CustomDifficulty";
+import CustomDifficulty from "./CustomDifficulty";
+import "./Difficulty.css";
 
 function Difficulty({
   board,
@@ -18,30 +19,38 @@ function Difficulty({
       </button>
       {showDifficulty ? (
         <div>
-          <h3>Difficulty Level Setting</h3>
-          <p>Choose a Preset Difficulty Level: </p>
-          <button
-            onClick={() => {
-              handleDifficulty("Easy");
-            }}
-          >
-            Easy (4-digits)
-          </button>
-          <button
-            onClick={() => {
-              handleDifficulty("Medium");
-            }}
-          >
-            Medium (5-digits)
-          </button>
-          <button
-            onClick={() => {
-              handleDifficulty("Hard");
-            }}
-          >
-            Hard (6-digits)
-          </button>
-          <br></br>
+          <h3 id='difficulty-setting'>Difficulty Level Setting</h3>
+          <div id='difficulty-preset'>
+            <label htmlFor='difficulty-btns' className='difficulty-label'>
+              Choose a Preset Difficulty Level:{" "}
+            </label>
+            <div className='difficulty-btns'>
+              <button
+                className='difficulty-btn'
+                onClick={() => {
+                  handleDifficulty("Easy");
+                }}
+              >
+                Easy (4-digits)
+              </button>
+              <button
+                className='difficulty-btn'
+                onClick={() => {
+                  handleDifficulty("Medium");
+                }}
+              >
+                Medium (5-digits)
+              </button>
+              <button
+                className='difficulty-btn'
+                onClick={() => {
+                  handleDifficulty("Hard");
+                }}
+              >
+                Hard (6-digits)
+              </button>
+            </div>
+          </div>
           <div>
             <button
               onClick={() => {
@@ -51,11 +60,11 @@ function Difficulty({
               {showCustom ? "Hide Custom Difficulty" : "Show Custom Difficulty"}
             </button>
             {showCustom ? (
-              <CustomDifficultyForm
+              <CustomDifficulty
                 boardDifficulty={boardDifficulty}
                 handleCustomInput={handleCustomInput}
                 checkNewBoard={checkNewBoard}
-              ></CustomDifficultyForm>
+              ></CustomDifficulty>
             ) : null}
           </div>
           <br></br>

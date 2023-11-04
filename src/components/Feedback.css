@@ -1,0 +1,31 @@
+.feedback {
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+  .feedback-title {
+    font-size: 18px;
+  }
+  
+  .feedback-info {
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+  
+  .feedback-item {
+    font-size: 16px;
+    margin-top: 5px;
+  }
+  
+  .feedback-won {
+    color: green;
+    font-weight: bold;
+  }
+  
+  .feedback-lost {
+    color: red;
+    font-weight: bold;
+  }

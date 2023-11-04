@@ -1,3 +1,5 @@
+import "./Feedback.css";
+
 function Feedback({ board, gameState, maxGuesses, gameContinuesCallback }) {
   const tries = gameState.guesses.length;
   console.log(gameState.guesses.length);
@@ -6,14 +8,16 @@ function Feedback({ board, gameState, maxGuesses, gameContinuesCallback }) {
   console.log(cont);
 
   return (
-    <div>
-      <h2>Feedback</h2>
-      <p>Tries Remaining: {maxGuesses - tries} </p>{" "}
-      <p>Hints Remaining: {gameState.guesses[tries - 1].hints}</p>
+    <div className='feedback'>
+      <h2 className='feedback-title'>Feedback</h2>
+      <p className='feedback-info'>Tries Remaining: {maxGuesses - tries}</p>
+      <p className='feedback-info'>
+        Hints Remaining: {gameState.guesses[tries - 1].hints}
+      </p>
       <div>
         {gameState.guesses.map((guessInfo, idx) => {
           return (
-            <div key={idx + 1}>
+            <div key={idx + 1} className='feedback-item'>
               Try {idx + 1}: {guessInfo.guess} |{" "}
               {gameState.guesses[idx].feedback}
             </div>
@@ -21,11 +25,13 @@ function Feedback({ board, gameState, maxGuesses, gameContinuesCallback }) {
         })}
       </div>
       {gameState.won ? (
-        <p>You win!</p>
+        <p className='feedback-won'>You win!</p>
       ) : cont ? (
-        <p>Keep Guessing!</p>
+        <p className='feedback-info'>Keep Guessing!</p>
       ) : (
-        <p>Better luck next time, the combination was {board}</p>
+        <p className='feedback-lost'>
+          Better luck next time, the combination was {board}
+        </p>
       )}
     </div>
   );
