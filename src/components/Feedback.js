@@ -1,21 +1,32 @@
-function Feedback({ gameState, guesses }) {
-  const tries = gameState.length;
+function Feedback({ board, gameState, maxGuesses, gameContinuesCallback }) {
+  const tries = gameState.guesses.length;
+  console.log(gameState.guesses.length);
+  console.log(maxGuesses);
+  const cont = gameContinuesCallback();
+  console.log(cont);
 
   return (
     <div>
       <h2>Feedback</h2>
-      <p>Tries Remaining: {guesses - tries} </p>{" "}
-      <p>Hints Remaining: {gameState[tries - 1].hints}</p>
+      <p>Tries Remaining: {maxGuesses - tries} </p>{" "}
+      <p>Hints Remaining: {gameState.guesses[tries - 1].hints}</p>
       <div>
-        {gameState.map((guess, idx) => {
+        {gameState.guesses.map((guessInfo, idx) => {
           return (
             <div key={idx + 1}>
-              Try {idx + 1}: {guess.guess} | {gameState[idx].feedback}
+              Try {idx + 1}: {guessInfo.guess} |{" "}
+              {gameState.guesses[idx].feedback}
             </div>
           );
         })}
       </div>
-      {gameState.win ? <p>You win!</p> : null}
+      {gameState.won ? (
+        <p>You win!</p>
+      ) : cont ? (
+        <p>Keep Guessing!</p>
+      ) : (
+        <p>Better luck next time, the combination was {board}</p>
+      )}
     </div>
   );
 }
