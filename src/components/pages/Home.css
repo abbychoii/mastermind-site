@@ -1,0 +1,45 @@
+.app-title {
+    font-size: 24px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.app-description {
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.instructions {
+    text-align: left;
+    font-size: 14px;
+    margin: 10px;
+}
+
+.title-block {
+    margin-top: 70px;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    padding:20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.2)
+}
+
+#single-player-game-btn {
+    margin: 0 auto;
+    max-width: 300px;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+#single-player-game-btn:hover {
+    background-color: lightpink;
+    transform: translateY(-5px);
+}

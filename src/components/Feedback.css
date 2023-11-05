@@ -3,6 +3,7 @@
     padding: 10px;
     border-radius: 5px;
     margin-top: 20px;
+    margin-bottom:20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   }
   
@@ -20,6 +21,12 @@
     margin-top: 5px;
   }
   
+  .feedback-try {
+    font-weight: bold;
+    font-style: italic;
+    margin-right: 5px;
+    display: inline;
+  }
   .feedback-won {
     color: green;
     font-weight: bold;
@@ -28,4 +35,26 @@
   .feedback-lost {
     color: red;
     font-weight: bold;
+  }
+
+  .feedback-character {
+    display: inline;
+    padding: 4px; /* Adjust as needed for spacing between characters */
+    border: 1px solid #000; /* Add borders for each character */
+    margin-right: 10px; /* Adjust as needed for spacing between characters */
+    border-radius: 5px;
+    text-align: center;
+    width: 20px; /* Adjust as needed for the character box size */
+    font-weight: bold;
+    font-size: 16px;
+  }
+
+  .feedback-character-won {
+    background-color: #4CAF50;
+    color: #fff;
+  }
+
+  .feedback-character-lost {
+    background-color: #FFC107;
+    color: #000;
   }

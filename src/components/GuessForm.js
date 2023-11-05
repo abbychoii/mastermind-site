@@ -1,18 +1,18 @@
 import "./GuessForm.css";
-function GuessForm({ guess, handleChange, handleSubmit, boardDifficulty }) {
+function GuessForm({ guess, handleChange, handleSubmit, board }) {
   return (
     <form onSubmit={handleSubmit} className='guess-form'>
       <input
         type='text'
-        name='combo'
-        placeholder={"*".repeat(boardDifficulty.length)}
+        name='guess'
+        placeholder={"*".repeat(board.combo.length)}
         value={guess}
-        onChange={handleChange}
+        onChange={(e) => handleChange(e)}
         className='guess-input'
       />
       <button
         type='submit'
-        disabled={guess.length < boardDifficulty.length}
+        disabled={guess.length < board.combo.length}
         className='guess-button'
       >
         Submit Guess

@@ -1,0 +1,37 @@
+/* CSS for the login banner component */
+
+.login-banner {
+    background-color: #3498db; /* Background color */
+    color: #fff; /* Text color */
+    padding: 10px; /* Padding around the content */
+    text-align: center; /* Center align text */
+    position: relative; /* Position relative to contain the button */
+  }
+  
+  .close-banner-btn {
+    position: absolute; /* Position absolutely within the .login-banner */
+    top: 10px; /* Adjust top position as needed to align with the top edge */
+    right: 10px; /* Adjust right position as needed to align with the right edge */
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.2rem;
+    cursor: pointer;
+  }
+  
+  .login-banner h3 {
+    font-size: 1.5rem; /* Adjust the font size as needed */
+    margin: 0; /* Remove margin for the h3 element */
+  }
+  
+  .login-banner p {
+    font-size: 1rem; /* Adjust the font size as needed */
+    margin: 0; /* Remove margin for the p element */
+  }
+  
+  .login-banner a {
+    color: #ffdd33; /* Link color */
+    text-decoration: none; /* Remove underlines from links */
+    font-weight: bold; /* Make links bold */
+  }
+  
