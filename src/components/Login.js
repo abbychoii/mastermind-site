@@ -40,7 +40,12 @@ function Login({
       <br />
       <p>
         Don't have an account?{" "}
-        <button onClick={handleRegisterSubmit}>Register as new user</button>
+        <button
+          disabled={!profileForm.username || !profileForm.password}
+          onClick={handleRegisterSubmit}
+        >
+          Register as new user
+        </button>
       </p>
     </div>
   );

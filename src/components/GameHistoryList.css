@@ -1,0 +1,16 @@
+.game-history-list {
+        margin: 20px;
+        padding:20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        border: 1px solid #ccc;
+        border-radius: 15px;
+        box-shadow: 2px 2px 5px rgba(0,0,0,0.2)
+}
+
+.game-history-list h2 {
+    font-size: 1.5rem; /* Adjust the font size for the heading */
+    margin: 10px 0; /* Spacing around the heading */
+    text-align: center;
+}

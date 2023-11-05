@@ -1,6 +1,6 @@
 import "./NavBar.css";
 
-const NavBar = ({ loggedIn }) => {
+const NavBar = ({ loggedIn, signOut }) => {
   return (
     <div className='navbar'>
       <div className='nav-left'>
@@ -13,8 +13,13 @@ const NavBar = ({ loggedIn }) => {
           Single Player
         </a>
         <a href='http://localhost:3000/profile' className='nav-button'>
-          {loggedIn ? "Profile" : "Log In"}
+          {loggedIn ? "Profile" : "Login"}
         </a>
+        {loggedIn ? (
+          <button className='nav-button button' onClick={signOut}>
+            Sign Out
+          </button>
+        ) : null}
       </div>
     </div>
   );

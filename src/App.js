@@ -1,6 +1,6 @@
 import "./App.css";
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./components/pages/Home";
 import SinglePlayer from "./components/pages/SinglePlayer";
@@ -8,6 +8,15 @@ import Profile from "./components/pages/Profile";
 
 function App() {
   const URL = "http://localhost:5000/game";
+
+  // Get profile from localStorage or initialize it to empty profile
+  const [profile, setProfile] = useState(
+    JSON.parse(window.localStorage.getItem("profile")) || {
+      username: "",
+      user_id: 0,
+      user_games: [],
+    }
+  );
 
   const [showDifficulty, setShowDifficulty] = useState(true);
   const [showCustom, setShowCustom] = useState(false);
@@ -24,34 +33,69 @@ function App() {
     password: "",
   });
 
-  const [profile, setProfile] = useState({
-    username: "",
-    user_id: 0,
-    user_games: [],
-    games_won: 0,
-    games_lost: 0,
-  });
-
   //storing guess input from user
   const [guess, setGuess] = useState("");
 
   //storing combination information in state
-  const [board, setBoard] = useState({
-    game_id: 0, //game_id is 0 when there is no game being played
-    combo: "",
-    difficulty: {
-      label: "",
-      length: 0,
-      guesses: 10,
-    },
-  });
+  const [board, setBoard] = useState(
+    JSON.parse(window.localStorage.getItem("board")) || {
+      game_id: 0, //game_id is 0 when there is no game being played
+      combo: "",
+      difficulty: {
+        label: "",
+        length: 0,
+        guesses: 10,
+      },
+    }
+  );
   //storing user guess in state (used for storing form info)
 
   // storing history of guesses in state
-  const [gameState, setGameState] = useState({
-    won: false,
-    guesses: [],
-  });
+  const [gameState, setGameState] = useState(
+    JSON.parse(window.localStorage.getItem("gameState")) || {
+      won: false,
+      guesses: [],
+    }
+  );
+
+  useEffect(() => {
+    window.localStorage.setItem("profile", JSON.stringify(profile));
+  }, [profile]);
+
+  useEffect(() => {
+    window.localStorage.setItem("gameState", JSON.stringify(gameState));
+  }, [gameState]);
+
+  useEffect(() => {
+    window.localStorage.setItem("board", JSON.stringify(board));
+  }, [board]);
+
+  // Make a GET request for the profile whenever the profile page is loaded
+  const fetchProfile = async (profile) => {
+    try {
+      if (profile.user_id) {
+        const response = await axios.get(
+          `http://localhost:5000/user/${profile.user_id}`
+        );
+        setProfile(response.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const [hint, setHint] = useState("");
+
+  const getHint = async () => {
+    axios
+      .get(`http://localhost:5000/game/${board.game_id}/hint`)
+      .then((response) => {
+        setHint(response.data.hint);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   // Handle difficulty of board (when using preset difficulties)
   const handleDifficulty = (newDifficulty) => {
@@ -117,8 +161,12 @@ function App() {
       num_min: 0,
       num_max: 7,
       code_length: boardDifficultyForm.length,
-      num_guesses: boardDifficultyForm.guesses,
+      guesses_allowed: boardDifficultyForm.guesses,
+      game_label: boardDifficultyForm.label,
     };
+    if (profile.user_id) {
+      params["user_id"] = profile.user_id;
+    }
     // axios call to flask backend
     axios
       .post(URL, params)
@@ -134,16 +182,15 @@ function App() {
             guesses: boardDifficultyForm.guesses,
           },
         });
+        setGameState({ won: false, guesses: [] });
+        setGuess("");
+        setBoardDifficultyForm({ label: "Easy", length: 4, guesses: 10 });
+        setHint("");
+        fetchProfile(profile); // call fetchProfile after the post request is completed
       })
       .catch((error) => {
         console.log(error);
       });
-
-    if (board.combo) {
-      setGameState({ won: false, guesses: [] });
-      setGuess("");
-      setBoardDifficultyForm({ label: "Easy", length: 4, guesses: 10 });
-    }
   };
 
   // Handle submitting user guess check to backend
@@ -162,16 +209,24 @@ function App() {
           guesses: [...guesses, response.data],
         };
         setGameState(newGameState);
+        setHint("");
+        setGuess("");
+        fetchProfile(profile);
       })
       .catch((error) => {
         console.log(error);
       });
-
-    setGuess("");
   };
-  const handleLoginSubmit = async (profileForm) => {
+
+  const handleLoginSubmit = async (e) => {
+    e.preventDefault();
+    console.log(e);
+    const profile = {
+      username: profileForm.username,
+      password: profileForm.password,
+    };
     axios
-      .get("http://localhost:5000/user", profileForm)
+      .post("http://localhost:5000/user/authenticate", profile)
       .then((response) => {
         console.log(response);
         const user_dict = response.data;
@@ -179,23 +234,27 @@ function App() {
           username: user_dict.username,
           user_id: user_dict.user_id,
           user_games: user_dict.user_games,
-          games_won: user_dict.games_won,
-          games_lost: user_dict.games_lost,
         });
+        setProfileForm({ username: "", password: "" });
+        fetchProfile(profile);
       })
       .catch((error) => {
         console.log(error);
         alert("User not found. Please try again.");
       });
+
     // if you know that you have successfully logged in, then you can clear the form
-    if (profile.username) {
-      setProfileForm({ username: "", password: "" });
-    }
   };
 
-  const handleRegisterSubmit = async (profileForm) => {
+  const handleRegisterSubmit = async (e) => {
+    e.preventDefault();
+    console.log(e);
+    const profile = {
+      username: profileForm.username,
+      password: profileForm.password,
+    };
     axios
-      .put("http://localhost:5000/user", profileForm)
+      .post("http://localhost:5000/user", profile)
       .then((response) => {
         console.log(response);
         const user_dict = response.data;
@@ -203,18 +262,15 @@ function App() {
           username: user_dict.username,
           user_id: user_dict.user_id,
           user_games: user_dict.user_games,
-          games_won: user_dict.games_won,
-          games_lost: user_dict.games_lost,
         });
+        setProfileForm({ username: "", password: "" });
+        fetchProfile(profile);
       })
       .catch((error) => {
         console.log(error);
         alert("Invalid username or password, please try again.");
       });
     // if you know that you have successfully logged in, then you can clear the form
-    if (profile.username) {
-      setProfileForm({ username: "", password: "" });
-    }
   };
 
   const gameContinues = () => {
@@ -223,10 +279,45 @@ function App() {
     );
   };
 
+  const loadGame = async (game_id) => {
+    axios
+      .get(`http://localhost:5000/game/${game_id}`)
+      .then((response) => {
+        console.log(response);
+        const game_dict = response.data;
+        setBoard({
+          game_id: game_dict.game_id,
+          combo: game_dict.num_combo,
+          difficulty: {
+            label: game_dict.game_label,
+            length: game_dict.num_combo.length,
+            guesses: game_dict.guesses_allowed,
+          },
+        });
+        setGameState({ won: false, guesses: game_dict.guesses });
+        setGuess("");
+        setHint("");
+        setBoardDifficultyForm({ label: "Easy", length: 4, guesses: 10 });
+        fetchProfile(profile);
+        window.location.href = "http://localhost:3000/singleplayer";
+      })
+      .catch((error) => {
+        console.log(error);
+        alert("Error loading game.");
+      });
+  };
+
+  const signOut = () => {
+    setProfile({ username: "", user_id: 0, user_games: [] });
+  };
+
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<Home loggedIn={profile.username} />}></Route>
+        <Route
+          path='/'
+          element={<Home loggedIn={profile.username} signOut={signOut} />}
+        ></Route>
         <Route
           path='/singleplayer'
           element={
@@ -246,6 +337,9 @@ function App() {
               showDifficulty={showDifficulty}
               setShowDifficulty={setShowDifficulty}
               gameContinues={gameContinues}
+              signOut={signOut}
+              hint={hint}
+              getHint={getHint}
             />
           }
         ></Route>
@@ -253,22 +347,18 @@ function App() {
           path='/profile'
           element={
             <Profile
+              signOut={signOut}
               profile={profile}
               profileForm={profileForm}
               handleChange={handleChange}
               handleRegisterSubmit={handleRegisterSubmit}
               handleLoginSubmit={handleLoginSubmit}
+              loadGame={loadGame}
             />
           }
         ></Route>
       </Routes>
     </BrowserRouter>
-    // <div>
-    //   <Home></Home>
-    //   <div className='app'>
-    //     {/* <DailyChallenge></DailyChallenge> */}
-    //   </div>
-    // </div>
   );
 }
 

@@ -12,7 +12,7 @@ function Banner({ loggedIn, showBanner, setShowBanner }) {
             X
           </button>
           {loggedIn ? (
-            <p className='banner-text'>Welcome back, {loggedIn.username}!</p>
+            <p className='banner-text'>Welcome back, {loggedIn}!</p>
           ) : (
             <div className='banner-text'>
               <h3>Reminder: Please log in to access all features</h3>

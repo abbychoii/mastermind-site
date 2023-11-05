@@ -1,5 +1,6 @@
 import NavBar from "../NavBar";
 import Login from "../Login";
+import GameHistoryList from "../GameHistoryList";
 import "./Profile.css";
 
 function Profile({
@@ -8,15 +9,26 @@ function Profile({
   profileForm,
   handleRegisterSubmit,
   handleLoginSubmit,
+  signOut,
+  loadGame,
 }) {
   return (
     <div>
-      <NavBar loggedIn={profile.username}></NavBar>
+      <NavBar loggedIn={profile.username} signOut={signOut}></NavBar>
       {profile.username ? (
-        <div className='profile-block'>
-          <h1>Profile</h1>
-          <h3>Username: {profile.username}</h3>
-          {/* <h3>User ID: {user.user_id}</h3> */}
+        <div>
+          <div className='profile-block'>
+            <h2>Profile</h2>
+            <h3>Username: {profile.username}</h3>
+            {/* <h3>User ID: {user.user_id}</h3> */}
+            <h3>Games Played: {profile.user_games.length}</h3>
+          </div>
+          {profile.user_games.length ? (
+            <GameHistoryList
+              games={profile.user_games}
+              loadGame={loadGame}
+            ></GameHistoryList>
+          ) : null}
         </div>
       ) : (
         <div className='profile-block'>

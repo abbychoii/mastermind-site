@@ -8,7 +8,7 @@ import Banner from "../Banner";
 
 function SinglePlayer({
   guess,
-  loggedIn,
+  signOut,
   handleChange,
   handleSubmit,
   board,
@@ -22,12 +22,16 @@ function SinglePlayer({
   setShowDifficulty,
   gameState,
   gameContinues,
+  loggedIn,
+  hint,
+  getHint,
 }) {
   const [showBanner, setShowBanner] = useState(true);
+  const [showRules, setShowRules] = useState(false);
 
   return (
     <div>
-      <NavBar loggedIn={loggedIn}></NavBar>
+      <NavBar signOut={signOut} loggedIn={loggedIn}></NavBar>
       <div className='game-block'>
         <h1 className='page-title'>Mastermind</h1>
         {showBanner ? (
@@ -37,6 +41,42 @@ function SinglePlayer({
             setShowBanner={setShowBanner}
           ></Banner>
         ) : null}
+        <div className='rules'>
+          <button
+            className='show-rules-btn'
+            onClick={() => setShowRules(!showRules)}
+          >
+            {showRules ? "Hide Rules" : "Show Rules"}
+          </button>
+          {showRules ? (
+            <ul>
+              <li>
+                The computer will generate a secret combination: 4-digits
+                (easy), 5-digits (medium), 6-digits (hard).
+              </li>
+              <li>
+                Each digit in the secret number will be within the range of 0 -
+                7, inclusive.{" "}
+              </li>
+              <li>
+                You will have 10 attempts to guess this number, which can have
+                repeating digits.
+              </li>
+              <li>
+                After each guess, you will receive feedback on how many digits
+                you correctly guessed and/or how many digits are in the correct
+                location.
+              </li>
+              <li>
+                Use the feedback to get closer to the number within 10 tries!
+              </li>
+              <li>
+                If you find yourself struggling, you can always ask for a quick
+                hint!
+              </li>
+            </ul>
+          ) : null}
+        </div>
         {board.difficulty.label ? (
           <p className='game-difficulty-info'>
             {board.difficulty.label} ({board.difficulty.length}-digits,{" "}
@@ -49,6 +89,8 @@ function SinglePlayer({
             gameState={gameState}
             board={board.combo}
             gameContinuesCallback={gameContinues}
+            getHint={getHint}
+            hint={hint}
           ></Feedback>
         ) : null}
         {/* checking that a board has been generated before you can start guessing */}

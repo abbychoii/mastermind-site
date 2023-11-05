@@ -1,6 +1,13 @@
 import "./Feedback.css";
 
-function Feedback({ board, gameState, maxGuesses, gameContinuesCallback }) {
+function Feedback({
+  board,
+  gameState,
+  maxGuesses,
+  gameContinuesCallback,
+  hint,
+  getHint,
+}) {
   const tries = gameState.guesses.length;
   const cont = gameContinuesCallback();
 
@@ -38,6 +45,18 @@ function Feedback({ board, gameState, maxGuesses, gameContinuesCallback }) {
         <p className='feedback-lost'>
           Better luck next time, the combination was {board}
         </p>
+      )}
+      {gameState.won ? null : (
+        <div>
+          {hint ? <p className='feedback-hint'>Hint: {hint}</p> : null}
+          <button
+            onClick={getHint}
+            className='feedback-hint'
+            disabled={gameState.guesses.length === 0 || hint}
+          >
+            Get Hint
+          </button>
+        </div>
       )}
     </div>
   );

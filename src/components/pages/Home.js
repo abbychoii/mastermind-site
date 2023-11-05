@@ -1,10 +1,10 @@
 import NavBar from "../NavBar";
 import "./Home.css";
 
-function Home({ loggedIn }) {
+function Home({ loggedIn, signOut }) {
   return (
     <div>
-      <NavBar loggedIn={loggedIn}></NavBar>
+      <NavBar loggedIn={loggedIn} signOut={signOut}></NavBar>
       <div className='title-block'>
         <h1 className='app-title'>Welcome to Mastermind!</h1>
         <div className='instructions'>
