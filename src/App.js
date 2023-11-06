@@ -112,7 +112,10 @@ function App() {
     console.log(e);
     if (e.target.name === "guess") {
       const guess = e.target.value;
-      if (/^[0-7]*$/.test(guess) && guess.length <= board.difficulty.length) {
+      if (
+        /^(0|[1-7][0-7]*)$/.test(guess) &&
+        guess.length <= board.difficulty.length
+      ) {
         setGuess(String(guess));
       }
     } else if (e.target.name === "username") {
@@ -183,7 +186,7 @@ function App() {
   };
 
   // Handle submitting user guess check to backend
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (guess) => {
     e.preventDefault();
     console.log(e);
 
