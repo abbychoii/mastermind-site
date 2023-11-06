@@ -301,7 +301,8 @@ function App() {
         setHint("");
         setBoardDifficultyForm({ label: "Easy", length: 4, guesses: 10 });
         fetchProfile(profile);
-        window.location.href = `${URL}/singleplayer`;
+        window.location.href =
+          "https://masterminds-9a215e501a94.herokuapp.com/singleplayer";
       })
       .catch((error) => {
         console.log(error);
