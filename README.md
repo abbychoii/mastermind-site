@@ -1,5 +1,11 @@
 # Getting Started with Mastermind
 
+* [Frontend Repo](https://github.com/abbychoii/mastermind-site)
+  * main branch - deployed at [Mastermind](https://masterminds-9a215e501a94.herokuapp.com/)
+  * mastermind local branch - local build (contains links that align with running front & backend locally)
+* [Backend Repo](https://github.com/abbychoii/mastermind)
+* [Command Line Script](https://github.com/abbychoii/mastermind-cl)
+
 ## Mastermind Site Overview 
 The Mastermind site serves as a way to play the Mastermind code-breaking game in a single-player mode. There are 3 pre-set difficulty levels and the option to customize the length of the code (2-10), as well as the number of guesses (2-20). 
 
