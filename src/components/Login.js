@@ -9,6 +9,9 @@ function Login({
   return (
     <div className='login-block'>
       <h3>Login to Profile</h3>
+      <p id='criteria'>
+        Username and password must be alphanumeric and less than 15 characters!
+      </p>
       <form onSubmit={handleLoginSubmit}>
         <label htmlFor='username'>Username: </label>
         <input

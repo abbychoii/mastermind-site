@@ -8,3 +8,10 @@
     border-radius: 15px;
     box-shadow: 2px 2px 5px rgba(0,0,0,0.2)
 }
+
+#criteria {
+    font-style: italic;
+    font-size: 0.8em;
+    margin-top: 3px;
+    margin-bottom: 20px;
+}

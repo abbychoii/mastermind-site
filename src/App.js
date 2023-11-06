@@ -48,7 +48,6 @@ function App() {
       },
     }
   );
-  //storing user guess in state (used for storing form info)
 
   // storing history of guesses in state
   const [gameState, setGameState] = useState(
@@ -57,18 +56,6 @@ function App() {
       guesses: [],
     }
   );
-
-  useEffect(() => {
-    window.localStorage.setItem("profile", JSON.stringify(profile));
-  }, [profile]);
-
-  useEffect(() => {
-    window.localStorage.setItem("gameState", JSON.stringify(gameState));
-  }, [gameState]);
-
-  useEffect(() => {
-    window.localStorage.setItem("board", JSON.stringify(board));
-  }, [board]);
 
   // Make a GET request for the profile whenever the profile page is loaded
   const fetchProfile = async (profile) => {
@@ -130,7 +117,7 @@ function App() {
       }
     } else if (e.target.name === "username") {
       const formValue = e.target.value;
-      if (/^[a-z0-9]*$/.test(formValue) && formValue.length <= 10) {
+      if (/^[a-zA-Z0-9]*$/.test(formValue) && formValue.length <= 15) {
         setProfileForm({ ...profileForm, username: formValue });
       }
     } else if (e.target.name === "password") {
@@ -313,6 +300,18 @@ function App() {
   const signOut = () => {
     setProfile({ username: "", user_id: 0, user_games: [] });
   };
+
+  useEffect(() => {
+    window.localStorage.setItem("profile", JSON.stringify(profile));
+  }, [profile]);
+
+  useEffect(() => {
+    window.localStorage.setItem("gameState", JSON.stringify(gameState));
+  }, [gameState]);
+
+  useEffect(() => {
+    window.localStorage.setItem("board", JSON.stringify(board));
+  }, [board]);
 
   return (
     <BrowserRouter>
