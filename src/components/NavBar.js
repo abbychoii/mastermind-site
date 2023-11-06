@@ -4,15 +4,24 @@ const NavBar = ({ loggedIn, signOut }) => {
   return (
     <div className='navbar'>
       <div className='nav-left'>
-        <a href='http://localhost:3000/' className='nav-button'>
+        <a
+          href='https://masterminds-9a215e501a94.herokuapp.com/'
+          className='nav-button'
+        >
           Mastermind 🧠
         </a>
       </div>
       <div className='nav-right'>
-        <a href='http://localhost:3000/singleplayer' className='nav-button'>
+        <a
+          href='https://masterminds-9a215e501a94.herokuapp.com/singleplayer'
+          className='nav-button'
+        >
           Single Player
         </a>
-        <a href='http://localhost:3000/profile' className='nav-button'>
+        <a
+          href='https://masterminds-9a215e501a94.herokuapp.com/profile'
+          className='nav-button'
+        >
           {loggedIn ? "Profile" : "Login"}
         </a>
         {loggedIn ? (

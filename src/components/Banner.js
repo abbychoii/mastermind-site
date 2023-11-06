@@ -18,7 +18,9 @@ function Banner({ loggedIn, showBanner, setShowBanner }) {
               <h3>Reminder: Please log in to access all features</h3>
               <p>
                 Don't have an account?{" "}
-                <a href='http://localhost:3000/profile'>Register here</a>
+                <a href='https://masterminds-9a215e501a94.herokuapp.com/profile'>
+                  Register here
+                </a>
               </p>
             </div>
           )}{" "}

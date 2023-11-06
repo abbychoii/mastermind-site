@@ -48,7 +48,8 @@ function Home({ loggedIn, signOut }) {
         <button
           id='single-player-game-btn'
           onClick={() =>
-            (window.location.href = "http://localhost:3000/singleplayer")
+            (window.location.href =
+              "https://masterminds-9a215e501a94.herokuapp.com/singleplayer")
           }
         >
           {" "}

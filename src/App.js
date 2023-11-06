@@ -7,7 +7,7 @@ import SinglePlayer from "./components/pages/SinglePlayer";
 import Profile from "./components/pages/Profile";
 
 function App() {
-  const URL = "http://localhost:5000/game";
+  const URL = "https://masterminds-backend-6e111276e906.herokuapp.com";
 
   // Get profile from localStorage or initialize it to empty profile
   const [profile, setProfile] = useState(
@@ -75,7 +75,7 @@ function App() {
     try {
       if (profile.user_id) {
         const response = await axios.get(
-          `http://localhost:5000/user/${profile.user_id}`
+          `https://masterminds-backend-6e111276e906.herokuapp.com/user/${profile.user_id}`
         );
         setProfile(response.data);
       }
@@ -88,7 +88,9 @@ function App() {
 
   const getHint = async () => {
     axios
-      .get(`http://localhost:5000/game/${board.game_id}/hint`)
+      .get(
+        `https://masterminds-backend-6e111276e906.herokuapp.com/game/${board.game_id}/hint`
+      )
       .then((response) => {
         setHint(response.data.hint);
       })
@@ -169,7 +171,7 @@ function App() {
     }
     // axios call to flask backend
     axios
-      .post(URL, params)
+      .post(`${URL}/game`, params)
       .then((response) => {
         console.log(response);
         const game_dict = response.data;
@@ -200,7 +202,7 @@ function App() {
 
     const guessData = { guess: guess };
     axios
-      .post(`${URL}/${board.game_id}/guess`, guessData)
+      .post(`${URL}/game/${board.game_id}/guess`, guessData)
       .then((response) => {
         console.log(response);
         const guesses = gameState.guesses;
@@ -226,7 +228,7 @@ function App() {
       password: profileForm.password,
     };
     axios
-      .post("http://localhost:5000/user/authenticate", profile)
+      .post(`${URL}/user/authenticate`, profile)
       .then((response) => {
         console.log(response);
         const user_dict = response.data;
@@ -254,7 +256,7 @@ function App() {
       password: profileForm.password,
     };
     axios
-      .post("http://localhost:5000/user", profile)
+      .post(`${URL}/user`, profile)
       .then((response) => {
         console.log(response);
         const user_dict = response.data;
@@ -281,7 +283,7 @@ function App() {
 
   const loadGame = async (game_id) => {
     axios
-      .get(`http://localhost:5000/game/${game_id}`)
+      .get(`${URL}/game/${game_id}`)
       .then((response) => {
         console.log(response);
         const game_dict = response.data;
@@ -299,7 +301,7 @@ function App() {
         setHint("");
         setBoardDifficultyForm({ label: "Easy", length: 4, guesses: 10 });
         fetchProfile(profile);
-        window.location.href = "http://localhost:3000/singleplayer";
+        window.location.href = `${URL}/singleplayer`;
       })
       .catch((error) => {
         console.log(error);
